@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voz dos Riachos - Problemas da Comunidade</title>
+    <meta name="description" content="Plataforma comunitária para reportar e votar nos principais problemas de Riachos">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>🗣️ Voz dos Riachos</h1>
+            <p class="subtitle">Dê voz aos problemas da sua comunidade</p>
+            <div class="auth-buttons">
+                <button id="loginBtn" class="btn-secondary">Entrar</button>
+                <button id="signupBtn" class="btn-primary">Criar Conta</button>
+                <button id="logoutBtn" class="btn-secondary" style="display: none;">Sair</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Create Post Section (only visible when logged in) -->
+        <section id="createPostSection" class="create-post-card" style="display: none;">
+            <h2>Criar Nova Publicação</h2>
+            <form id="createPostForm">
+                <input 
+                    type="text" 
+                    id="postTitle" 
+                    placeholder="Título do problema (máx. 100 caracteres)" 
+                    maxlength="100" 
+                    required>
+                <textarea 
+                    id="postBody" 
+                    placeholder="Descreva o problema (máx. 1000 caracteres)" 
+                    maxlength="1000" 
+                    rows="4" 
+                    required></textarea>
+                <button type="submit" class="btn-primary">Publicar</button>
+            </form>
+        </section>
+
+        <!-- Posts Feed -->
+        <section class="posts-section">
+            <h2>Problemas Reportados</h2>
+            <div id="postsContainer">
+                <!-- Posts will be loaded here dynamically -->
+                <p class="loading">A carregar publicações...</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Auth Modal -->
+    <div id="authModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="modalTitle">Entrar</h2>
+            <form id="authForm">
+                <input type="email" id="email" placeholder="Email" required>
+                <input type="password" id="password" placeholder="Palavra-passe" required>
+                <button type="submit" class="btn-primary">Continuar</button>
+            </form>
+            <p id="authToggle" class="auth-toggle"></p>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>© 2024 Voz dos Riachos - Criado pela comunidade, para a comunidade</p>
+        </div>
+    </footer>
+
+    <script type="module" src="app.js"></script>
+</body>
+</html>
