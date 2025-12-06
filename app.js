@@ -15,6 +15,8 @@ const db = getFirestore(app);
 const loginBtn = document.getElementById('loginBtn');
 const signupBtn = document.getElementById('signupBtn');
 const logoutBtn = document.getElementById('logoutBtn');
+const heroReportBtn = document.getElementById('heroReportBtn');
+const heroCreateAccountBtn = document.getElementById('heroCreateAccountBtn');
 const authModal = document.getElementById('authModal');
 const closeModal = document.querySelector('.close');
 const authForm = document.getElementById('authForm');
@@ -23,6 +25,10 @@ const modalTitle = document.getElementById('modalTitle');
 const createPostSection = document.getElementById('createPostSection');
 const createPostForm = document.getElementById('createPostForm');
 const postsContainer = document.getElementById('postsContainer');
+
+// Stats elements
+const statsProblems = document.getElementById('statsProblems');
+const statsVotes = document.getElementById('statsVotes');
 
 // State
 let isSignupMode = false;
@@ -37,12 +43,20 @@ onAuthStateChanged(auth, (user) => {
         signupBtn.style.display = 'none';
         logoutBtn.style.display = 'block';
         createPostSection.style.display = 'block';
+        
+        // Update hero buttons
+        heroReportBtn.style.display = 'inline-block';
+        heroCreateAccountBtn.style.display = 'none';
     } else {
         // User is logged out
         loginBtn.style.display = 'block';
         signupBtn.style.display = 'block';
         logoutBtn.style.display = 'none';
         createPostSection.style.display = 'none';
+        
+        // Update hero buttons
+        heroReportBtn.style.display = 'none';
+        heroCreateAccountBtn.style.display = 'inline-block';
     }
 });
 
@@ -64,8 +78,15 @@ function closeAuthModal() {
 // Event Listeners
 loginBtn.addEventListener('click', () => openModal(false));
 signupBtn.addEventListener('click', () => openModal(true));
+heroCreateAccountBtn.addEventListener('click', () => openModal(true));
 closeModal.addEventListener('click', closeAuthModal);
 authToggle.addEventListener('click', () => openModal(!isSignupMode));
+
+// Hero Report Button - scroll to create post section
+heroReportBtn.addEventListener('click', () => {
+    createPostSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    document.getElementById('postTitle').focus();
+});
 
 window.addEventListener('click', (e) => {
     if (e.target === authModal) {
@@ -139,7 +160,7 @@ createPostForm.addEventListener('submit', async (e) => {
             votes: 0,
             votedBy: [],
             authorId: currentUser.uid,
-            city: 'riachos', // Default city for now
+            city: 'riachos',
             createdAt: new Date(),
             updatedAt: new Date()
         });
@@ -151,6 +172,35 @@ createPostForm.addEventListener('submit', async (e) => {
     }
 });
 
+// Calculate and Update Stats
+function updateStats(posts) {
+    // Count total posts
+    const totalPosts = posts.length;
+    
+    // Count total votes (sum of all votes across all posts)
+    const totalVotes = posts.reduce((sum, post) => sum + (post.votes || 0), 0);
+    
+    // Animate the numbers
+    animateValue(statsProblems, 0, totalPosts, 1000);
+    animateValue(statsVotes, 0, totalVotes, 1000);
+}
+
+// Animate number counting
+function animateValue(element, start, end, duration) {
+    const range = end - start;
+    const increment = range / (duration / 16); // 60fps
+    let current = start;
+    
+    const timer = setInterval(() => {
+        current += increment;
+        if ((increment > 0 && current >= end) || (increment < 0 && current <= end)) {
+            current = end;
+            clearInterval(timer);
+        }
+        element.textContent = Math.floor(current);
+    }, 16);
+}
+
 // Load and Display Posts
 function loadPosts() {
     const q = query(collection(db, 'posts'), orderBy('votes', 'desc'), orderBy('createdAt', 'desc'));
@@ -158,18 +208,25 @@ function loadPosts() {
     onSnapshot(q, (snapshot) => {
         if (snapshot.empty) {
             postsContainer.innerHTML = '<p class="empty-state">Ainda não há publicações. Seja o primeiro a reportar um problema!</p>';
+            updateStats([]);
             return;
         }
         
         postsContainer.innerHTML = '';
+        const posts = [];
         
         snapshot.forEach((docSnapshot) => {
             const post = docSnapshot.data();
             const postId = docSnapshot.id;
             
+            posts.push(post);
+            
             const postCard = createPostCard(post, postId);
             postsContainer.appendChild(postCard);
         });
+        
+        // Update stats with all posts
+        updateStats(posts);
     }, (error) => {
         console.error('Erro ao carregar publicações:', error);
         postsContainer.innerHTML = '<p class="empty-state">Erro ao carregar publicações.</p>';

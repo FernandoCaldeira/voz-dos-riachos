@@ -3,23 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Voz dos Riachos - Problemas da Comunidade</title>
-    <meta name="description" content="Plataforma comunitária para reportar e votar nos principais problemas de Riachos">
+    <title>Voz dos Riachos - A tua voz. A tua terra.</title>
+    <meta name="description" content="Reporta problemas, vota nas prioridades e ajuda a mudar Riachos.">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <!-- Header -->
     <header>
-        <div class="container">
-            <h1>🗣️ Voz dos Riachos</h1>
-            <p class="subtitle">Dê voz aos problemas da sua comunidade</p>
+        <div class="header-container">
+            <div class="logo">
+                <div class="logo-icon">🗣️</div>
+                <span>Voz dos Riachos</span>
+            </div>
             <div class="auth-buttons">
-                <button id="loginBtn" class="btn-secondary">Entrar</button>
-                <button id="signupBtn" class="btn-primary">Criar Conta</button>
-                <button id="logoutBtn" class="btn-secondary" style="display: none;">Sair</button>
+                <button id="loginBtn" class="btn btn-secondary">Entrar</button>
+                <button id="signupBtn" class="btn btn-primary">Criar Conta</button>
+                <button id="logoutBtn" class="btn btn-secondary" style="display: none;">Sair</button>
             </div>
         </div>
     </header>
 
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>A tua voz. A tua terra.</h1>
+        <p>Reporta problemas, vota nas prioridades e ajuda a mudar Riachos.</p>
+        <div class="hero-cta">
+            <button id="heroReportBtn" class="btn btn-primary btn-large" style="display: none;">Reportar Problema</button>
+            <button id="heroCreateAccountBtn" class="btn btn-primary btn-large">Criar Conta para Reportar</button>
+        </div>
+    </section>
+
+    <!-- Stats -->
+    <section class="stats">
+        <div class="stat-card">
+            <div class="stat-number" id="statsProblems">0</div>
+            <div class="stat-label">Problemas reportados</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" id="statsVotes">0</div>
+            <div class="stat-label">Votos dados</div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
     <main class="container">
         <!-- Create Post Section (only visible when logged in) -->
         <section id="createPostSection" class="create-post-card" style="display: none;">
@@ -37,13 +63,15 @@
                     maxlength="1000" 
                     rows="4" 
                     required></textarea>
-                <button type="submit" class="btn-primary">Publicar</button>
+                <button type="submit" class="btn btn-primary">Publicar</button>
             </form>
         </section>
 
-        <!-- Posts Feed -->
+        <!-- Posts Section -->
         <section class="posts-section">
-            <h2>Problemas Reportados</h2>
+            <div class="section-header">
+                <h2>Problemas Reportados</h2>
+            </div>
             <div id="postsContainer">
                 <!-- Posts will be loaded here dynamically -->
                 <p class="loading">A carregar publicações...</p>
@@ -59,7 +87,7 @@
             <form id="authForm">
                 <input type="email" id="email" placeholder="Email" required>
                 <input type="password" id="password" placeholder="Palavra-passe" required>
-                <button type="submit" class="btn-primary">Continuar</button>
+                <button type="submit" class="btn btn-primary">Continuar</button>
             </form>
             <p id="authToggle" class="auth-toggle"></p>
         </div>

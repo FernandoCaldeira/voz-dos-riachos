@@ -1,20 +1,24 @@
-/* Reset and Base Styles */
+/* ===== CSS VARIABLES ===== */
+/* Muda o --primary-color aqui para mudar a cor em todo o site */
+:root {
+    --primary-color: #10b981;
+    --primary-hover: #059669;
+    --primary-light: #f0fdf4;
+    --text-primary: #1a1a1a;
+    --text-secondary: #666;
+    --text-tertiary: #999;
+    --bg-primary: #ffffff;
+    --bg-secondary: #fafafa;
+    --border-color: #e5e5e5;
+    --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    --shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* ===== RESET ===== */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-}
-
-:root {
-    --primary-color: #2563eb;
-    --primary-hover: #1d4ed8;
-    --text-primary: #1f2937;
-    --text-secondary: #6b7280;
-    --bg-primary: #ffffff;
-    --bg-secondary: #f9fafb;
-    --border-color: #e5e7eb;
-    --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
-    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
 }
 
 body {
@@ -27,27 +31,47 @@ body {
 .container {
     max-width: 800px;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 24px;
 }
 
-/* Header */
+/* ===== HEADER ===== */
 header {
-    background-color: var(--bg-primary);
+    background: var(--bg-primary);
     border-bottom: 1px solid var(--border-color);
-    padding: 24px 0;
-    margin-bottom: 32px;
+    padding: 16px 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
 }
 
-header h1 {
-    font-size: 28px;
-    font-weight: 700;
-    margin-bottom: 4px;
+.header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.subtitle {
-    color: var(--text-secondary);
-    font-size: 14px;
-    margin-bottom: 16px;
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.logo-icon {
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-hover) 100%);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 18px;
 }
 
 .auth-buttons {
@@ -55,43 +79,116 @@ header h1 {
     gap: 8px;
 }
 
-/* Buttons */
-button {
+/* ===== BUTTONS ===== */
+.btn {
     padding: 8px 16px;
-    border-radius: 6px;
-    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    border: none;
     font-size: 14px;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.2s;
 }
 
-.btn-primary {
-    background-color: var(--primary-color);
-    color: white;
-    border: none;
-}
-
-.btn-primary:hover {
-    background-color: var(--primary-hover);
-}
-
 .btn-secondary {
-    background-color: var(--bg-primary);
-    color: var(--text-primary);
+    background: transparent;
+    color: var(--text-secondary);
+    border: 1px solid var(--border-color);
 }
 
 .btn-secondary:hover {
-    background-color: var(--bg-secondary);
+    background: var(--bg-secondary);
 }
 
-/* Create Post Section */
+.btn-primary {
+    background: var(--primary-color);
+    color: white;
+    border: 1px solid var(--primary-color);
+}
+
+.btn-primary:hover {
+    background: var(--primary-hover);
+    border-color: var(--primary-hover);
+}
+
+.btn-large {
+    padding: 14px 28px;
+    font-size: 16px;
+    border-radius: 10px;
+}
+
+/* ===== HERO SECTION ===== */
+.hero {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 48px 24px;
+    text-align: center;
+}
+
+.hero h1 {
+    font-size: 48px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+}
+
+.hero p {
+    font-size: 20px;
+    color: var(--text-secondary);
+    margin-bottom: 32px;
+}
+
+.hero-cta {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* ===== STATS SECTION ===== */
+.stats {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px 48px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 24px;
+}
+
+.stat-card {
+    background: var(--bg-primary);
+    padding: 24px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    text-align: center;
+    transition: all 0.2s;
+}
+
+.stat-card:hover {
+    box-shadow: var(--shadow-hover);
+}
+
+.stat-number {
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 8px;
+}
+
+.stat-label {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+/* ===== CREATE POST SECTION ===== */
 .create-post-card {
-    background-color: var(--bg-primary);
-    border-radius: 8px;
+    background: var(--bg-primary);
+    border-radius: 12px;
     padding: 24px;
     margin-bottom: 24px;
     box-shadow: var(--shadow);
+    border: 1px solid var(--border-color);
 }
 
 .create-post-card h2 {
@@ -113,7 +210,7 @@ textarea {
     width: 100%;
     padding: 10px 12px;
     border: 1px solid var(--border-color);
-    border-radius: 6px;
+    border-radius: 8px;
     font-size: 14px;
     font-family: inherit;
     transition: border-color 0.2s;
@@ -130,48 +227,66 @@ textarea {
     min-height: 100px;
 }
 
-/* Posts Section */
-.posts-section h2 {
-    font-size: 18px;
-    font-weight: 600;
-    margin-bottom: 16px;
+/* ===== POSTS SECTION ===== */
+.posts-section {
+    margin-bottom: 48px;
 }
 
+.section-header {
+    margin-bottom: 24px;
+}
+
+.section-header h2 {
+    font-size: 24px;
+    font-weight: 600;
+}
+
+/* ===== POST CARD ===== */
 .post-card {
-    background-color: var(--bg-primary);
-    border-radius: 8px;
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
     padding: 20px;
     margin-bottom: 16px;
-    box-shadow: var(--shadow);
     display: flex;
     gap: 16px;
+    transition: all 0.2s;
+}
+
+.post-card:hover {
+    border-color: var(--primary-color);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.1);
 }
 
 .vote-section {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 4px;
-    min-width: 40px;
+    gap: 8px;
+    min-width: 48px;
 }
 
 .vote-btn {
-    background: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
     border: 1px solid var(--border-color);
-    border-radius: 4px;
-    padding: 4px 8px;
+    background: var(--bg-primary);
     cursor: pointer;
-    font-size: 18px;
-    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
     transition: all 0.2s;
 }
 
 .vote-btn:hover {
-    background-color: var(--bg-secondary);
+    background: var(--primary-light);
+    border-color: var(--primary-color);
 }
 
 .vote-btn.voted {
-    background-color: var(--primary-color);
+    background: var(--primary-color);
     color: white;
     border-color: var(--primary-color);
 }
@@ -182,7 +297,7 @@ textarea {
 }
 
 .vote-count {
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 600;
     color: var(--text-primary);
 }
@@ -199,21 +314,22 @@ textarea {
 }
 
 .post-title {
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 600;
     color: var(--text-primary);
 }
 
 .post-meta {
-    font-size: 12px;
-    color: var(--text-secondary);
+    font-size: 13px;
+    color: var(--text-tertiary);
     display: flex;
     gap: 12px;
+    margin-bottom: 8px;
 }
 
 .post-body {
     color: var(--text-secondary);
-    font-size: 14px;
+    font-size: 15px;
     line-height: 1.5;
     white-space: pre-wrap;
     word-wrap: break-word;
@@ -222,17 +338,18 @@ textarea {
 .delete-btn {
     background: none;
     border: none;
-    color: var(--text-secondary);
+    color: var(--text-tertiary);
     cursor: pointer;
-    font-size: 12px;
+    font-size: 13px;
     padding: 4px 8px;
+    transition: color 0.2s;
 }
 
 .delete-btn:hover {
     color: #ef4444;
 }
 
-/* Modal */
+/* ===== MODAL ===== */
 .modal {
     display: none;
     position: fixed;
@@ -250,11 +367,11 @@ textarea {
     padding: 32px;
     border-radius: 12px;
     max-width: 400px;
-    box-shadow: var(--shadow-lg);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
 }
 
 .close {
-    color: var(--text-secondary);
+    color: var(--text-tertiary);
     float: right;
     font-size: 28px;
     font-weight: bold;
@@ -285,15 +402,15 @@ textarea {
     color: var(--primary-color);
 }
 
-/* Loading and Empty States */
+/* ===== LOADING & EMPTY STATES ===== */
 .loading,
 .empty-state {
     text-align: center;
-    padding: 48px 20px;
-    color: var(--text-secondary);
+    padding: 48px 24px;
+    color: var(--text-tertiary);
 }
 
-/* Footer */
+/* ===== FOOTER ===== */
 footer {
     margin-top: 64px;
     padding: 24px 0;
@@ -302,14 +419,22 @@ footer {
 }
 
 footer p {
-    color: var(--text-secondary);
+    color: var(--text-tertiary);
     font-size: 14px;
 }
 
-/* Responsive */
-@media (max-width: 640px) {
-    header h1 {
-        font-size: 24px;
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+    .hero h1 {
+        font-size: 36px;
+    }
+    
+    .hero p {
+        font-size: 18px;
+    }
+    
+    .stats {
+        grid-template-columns: 1fr;
     }
     
     .post-card {
