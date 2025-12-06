@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Voz dos Riachos - A tua voz. A tua terra.</title>
+    <title>Voz de Riachos - A tua voz. A tua terra.</title>
     <meta name="description" content="Reporta problemas, vota nas prioridades e ajuda a mudar Riachos.">
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -28,9 +28,35 @@
         <h1>A tua voz. A tua terra.</h1>
         <p>Reporta problemas, vota nas prioridades e ajuda a mudar Riachos.</p>
         <div class="hero-cta">
-            <button id="heroReportBtn" class="btn btn-primary btn-large" style="display: none;">Reportar Problema</button>
-            <button id="heroCreateAccountBtn" class="btn btn-primary btn-large">Criar Conta para Reportar</button>
+    <button id="heroReportBtn" class="btn btn-primary btn-large" style="display: none;">Reportar Problema</button>
+    <button id="heroCreateAccountBtn" class="btn btn-primary btn-large">Criar Conta para Reportar</button>
+    
+    <!-- Share Button -->
+    <div class="share-container">
+        <button class="btn btn-secondary btn-large" id="shareBtn">
+            <span>🔗</span>
+            <span>Partilhar</span>
+        </button>
+        <div class="share-dropdown" id="shareDropdown">
+            <div class="share-option" data-share="whatsapp">
+                <span class="share-icon">💬</span>
+                <span class="share-text">WhatsApp</span>
+            </div>
+            <div class="share-option" data-share="facebook">
+                <span class="share-icon">📘</span>
+                <span class="share-text">Facebook</span>
+            </div>
+            <div class="share-option" data-share="email">
+                <span class="share-icon">✉️</span>
+                <span class="share-text">Email</span>
+            </div>
+            <div class="share-option" data-share="copy">
+                <span class="share-icon">📋</span>
+                <span class="share-text">Copiar Link</span>
+            </div>
         </div>
+    </div>
+</div>
     </section>
 
     <!-- Stats -->
@@ -95,7 +121,7 @@
 
     <footer>
         <div class="container">
-            <p>© 2024 Voz dos Riachos - Criado pela comunidade, para a comunidade</p>
+            <p>© 2024 Voz de Riachos - Criado pela comunidade, para a comunidade</p>
         </div>
     </footer>
 

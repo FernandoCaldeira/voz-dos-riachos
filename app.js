@@ -201,6 +201,103 @@ function animateValue(element, start, end, duration) {
     }, 16);
 }
 
+// ===== SHARE FUNCTIONALITY =====
+const shareBtn = document.getElementById('shareBtn');
+const shareDropdown = document.getElementById('shareDropdown');
+const siteUrl = window.location.href;
+const shareText = 'Conhece esta plataforma onde podemos reportar problemas em Riachos e votar nas prioridades!';
+
+// Check if mobile
+function isMobile() {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+}
+
+// Share Button Click
+shareBtn.addEventListener('click', async (e) => {
+    e.stopPropagation();
+    
+    // On mobile, try native share first
+    if (isMobile() && navigator.share) {
+        try {
+            await navigator.share({
+                title: 'Voz de Riachos',
+                text: shareText,
+                url: siteUrl
+            });
+            showShareFeedback('✓ Partilhado!');
+        } catch (err) {
+            // User cancelled or error - do nothing
+            if (err.name !== 'AbortError') {
+                console.log('Share failed:', err);
+            }
+        }
+    } else {
+        // On desktop, toggle dropdown
+        shareDropdown.classList.toggle('active');
+    }
+});
+
+// Close dropdown when clicking outside
+document.addEventListener('click', (e) => {
+    if (!e.target.closest('.share-container')) {
+        shareDropdown.classList.remove('active');
+    }
+});
+
+// Share Options Click
+document.querySelectorAll('.share-option').forEach(option => {
+    option.addEventListener('click', () => {
+        const type = option.getAttribute('data-share');
+        
+        switch(type) {
+            case 'whatsapp':
+                const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(shareText + ' ' + siteUrl)}`;
+                window.open(whatsappUrl, '_blank');
+                showShareFeedback('A abrir WhatsApp...');
+                break;
+                
+            case 'facebook':
+                const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(siteUrl)}`;
+                window.open(facebookUrl, '_blank', 'width=600,height=400');
+                showShareFeedback('A abrir Facebook...');
+                break;
+                
+            case 'email':
+                const subject = 'Voz de Riachos - Plataforma Comunitária';
+                const body = `${shareText}\n\n${siteUrl}`;
+                window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+                showShareFeedback('A abrir email...');
+                break;
+                
+            case 'copy':
+                navigator.clipboard.writeText(siteUrl).then(() => {
+                    showShareFeedback('✓ Link copiado!');
+                });
+                break;
+        }
+        
+        shareDropdown.classList.remove('active');
+    });
+});
+
+// Show feedback toast
+function showShareFeedback(message) {
+    let feedback = document.querySelector('.share-feedback');
+    
+    if (!feedback) {
+        feedback = document.createElement('div');
+        feedback.className = 'share-feedback';
+        document.body.appendChild(feedback);
+    }
+    
+    feedback.textContent = message;
+    feedback.classList.add('show');
+    
+    setTimeout(() => {
+        feedback.classList.remove('show');
+    }, 2000);
+}
+
 // Load and Display Posts
 function loadPosts() {
     const q = query(collection(db, 'posts'), orderBy('votes', 'desc'), orderBy('createdAt', 'desc'));
