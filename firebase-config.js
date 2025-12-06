@@ -3,12 +3,12 @@
 // You can find these values in Firebase Console > Project Settings > Your apps > SDK setup and configuration
 
 export const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_PROJECT_ID.appspot.com",
-    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-    appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyA8F_7kiDvBS5213ClTwyYogLYOOB_6VS0",
+  authDomain: "voz-dos-riachos.firebaseapp.com",
+  projectId: "voz-dos-riachos",
+  storageBucket: "voz-dos-riachos.firebasestorage.app",
+  messagingSenderId: "129153742502",
+  appId: "1:129153742502:web:1f57da77bf1522b7d7e667"
 };
 
 // INSTRUCTIONS:
