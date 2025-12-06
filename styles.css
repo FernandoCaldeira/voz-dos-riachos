@@ -119,7 +119,7 @@ header {
 
 /* ===== HERO SECTION ===== */
 .hero {
-    max-width: 1200px;
+    max-width: 800px;
     margin: 0 auto;
     padding: 48px 24px;
     text-align: center;
@@ -146,9 +146,20 @@ header {
     flex-wrap: wrap;
 }
 
+.hero-cta .btn-large,
+.hero-cta .share-container {
+    flex: 1;
+    min-width: 200px;
+    max-width: 280px;
+}
+
+.hero-cta .share-container button {
+    width: 100%;
+}
+
 /* ===== STATS SECTION ===== */
 .stats {
-    max-width: 1200px;
+    max-width: 800px;
     margin: 0 auto;
     padding: 0 24px 48px;
     display: grid;

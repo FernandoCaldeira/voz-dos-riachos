@@ -66,8 +66,13 @@ function openModal(signupMode = false) {
     authToggle.textContent = signupMode 
         ? 'Já tem conta? Entrar' 
         : 'Não tem conta? Criar conta';
+
     const birthYearField = document.getElementById('birthYear');
     birthYearField.style.display = signupMode ? 'block' : 'none';
+
+    const privacyCheckbox = document.getElementById('privacyCheckbox');
+    privacyCheckbox.style.display = signupMode ? 'block' : 'none';
+
     authModal.style.display = 'block';
 }
 
@@ -110,6 +115,14 @@ authForm.addEventListener('submit', async (e) => {
     
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
+
+    if (isSignupMode) {
+        const acceptPrivacy = document.getElementById('acceptPrivacy').checked;
+        if (!acceptPrivacy) {
+            alert('Tens de aceitar a Política de Privacidade para criar uma conta.');
+            return;
+        }
+        }
     
     try {
         if (isSignupMode) {
