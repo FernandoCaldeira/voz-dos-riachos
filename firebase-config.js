@@ -3,12 +3,12 @@
 // You can find these values in Firebase Console > Project Settings > Your apps > SDK setup and configuration
 
 export const firebaseConfig = {
-    apiKey: "AIzaSyA8f_7kiDyBS5213ClTwyYogLYOOB_6VS0",
-    authDomain: "voz-dos-riachos.firebaseapp.com",
-    projectId: "voz-dos-riachos",
-    storageBucket: "voz-dos-riachos.firebasestorage.app",
-    messagingSenderId: "129153742502",
-    appId: "1:129153742502:web:1f57da77bf1522b7d7e667"
+    apiKey: "AIzaSyAADs3H1OSjBUbOExMK_bQHRvTwtvJSyns",
+  authDomain: "voz-dos-riachos-fb657.firebaseapp.com",
+  projectId: "voz-dos-riachos-fb657",
+  storageBucket: "voz-dos-riachos-fb657.firebasestorage.app",
+  messagingSenderId: "593459857500",
+  appId: "1:593459857500:web:22691cdf44b597bdee7e99"
 };
 
 // INSTRUCTIONS:
