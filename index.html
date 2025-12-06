@@ -113,9 +113,16 @@
             <form id="authForm">
                 <input type="email" id="email" placeholder="Email" required>
                 <input type="password" id="password" placeholder="Palavra-passe" required>
-                <button type="submit" class="btn btn-primary">Continuar</button>
-            </form>
-            <p id="authToggle" class="auth-toggle"></p>
+                <!-- Part to ask for age -->
+            <input 
+                type="number" 
+                id="birthYear" 
+                placeholder="Ano de nascimento (opcional)" 
+                min="1920" 
+                max="2024">
+                            <button type="submit" class="btn btn-primary">Continuar</button>
+                        </form>
+                        <p id="authToggle" class="auth-toggle"></p>
         </div>
     </div>
 

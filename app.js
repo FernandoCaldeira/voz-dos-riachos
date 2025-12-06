@@ -1,8 +1,7 @@
 // Import Firebase
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
-import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, deleteDoc, doc, updateDoc, increment, arrayUnion, arrayRemove, getDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
-
+import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, deleteDoc, doc, updateDoc, increment, arrayUnion, arrayRemove, getDoc, setDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 // Import Firebase config
 import { firebaseConfig } from './firebase-config.js';
 
@@ -67,6 +66,8 @@ function openModal(signupMode = false) {
     authToggle.textContent = signupMode 
         ? 'Já tem conta? Entrar' 
         : 'Não tem conta? Criar conta';
+    const birthYearField = document.getElementById('birthYear');
+    birthYearField.style.display = signupMode ? 'block' : 'none';
     authModal.style.display = 'block';
 }
 
@@ -113,6 +114,17 @@ authForm.addEventListener('submit', async (e) => {
     try {
         if (isSignupMode) {
             await createUserWithEmailAndPassword(auth, email, password);
+                const birthYear = document.getElementById('birthYear').value;
+    if (birthYear && currentUser) {
+        try {
+            await setDoc(doc(db, 'users', currentUser.uid), {
+                birthYear: parseInt(birthYear),
+                createdAt: new Date()
+            });
+        } catch (error) {
+            console.log('Erro ao guardar ano de nascimento:', error);
+        }
+    }
             alert('Conta criada com sucesso!');
         } else {
             await signInWithEmailAndPassword(auth, email, password);
