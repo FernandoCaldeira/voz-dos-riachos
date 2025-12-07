@@ -5,6 +5,55 @@ import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, deleteDoc
 // Import Firebase config
 import { firebaseConfig } from './firebase-config.js';
 
+// ===== TOAST NOTIFICATION SYSTEM =====
+let toastCounter = 0;
+
+function showToast(type, title, message, duration = 3000) {
+    const container = document.getElementById('toastContainer');
+    if (!container) return;
+    
+    const toastId = `toast-${toastCounter++}`;
+    
+    const icons = {
+        success: '✓',
+        error: '✕',
+        info: 'ℹ',
+        warning: '⚠'
+    };
+
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    toast.id = toastId;
+    toast.innerHTML = `
+        <div class="toast-icon">${icons[type]}</div>
+        <div class="toast-content">
+            <div class="toast-title">${title}</div>
+            ${message ? `<div class="toast-message">${message}</div>` : ''}
+        </div>
+        <button class="toast-close" onclick="removeToast('${toastId}')">×</button>
+        <div class="toast-progress"></div>
+    `;
+
+    container.appendChild(toast);
+
+    setTimeout(() => {
+        removeToast(toastId);
+    }, duration);
+}
+
+function removeToast(toastId) {
+    const toast = document.getElementById(toastId);
+    if (!toast) return;
+
+    toast.classList.add('removing');
+    setTimeout(() => {
+        toast.remove();
+    }, 300);
+}
+
+// Make removeToast available globally for onclick
+window.removeToast = removeToast;
+
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
@@ -103,7 +152,7 @@ window.addEventListener('click', (e) => {
 logoutBtn.addEventListener('click', async () => {
     try {
         await signOut(auth);
-        alert('Sessão terminada com sucesso!');
+        showToast('success', 'Sessão terminada', 'Até breve!');
     } catch (error) {
         alert('Erro ao terminar sessão: ' + error.message);
     }
@@ -119,7 +168,7 @@ authForm.addEventListener('submit', async (e) => {
     if (isSignupMode) {
         const acceptPrivacy = document.getElementById('acceptPrivacy').checked;
         if (!acceptPrivacy) {
-            alert('Tens de aceitar a Política de Privacidade para criar uma conta.');
+            showToast('warning', 'Atenção', 'Tens de aceitar a Política de Privacidade.');
             return;
         }
         }
@@ -138,10 +187,10 @@ authForm.addEventListener('submit', async (e) => {
             console.log('Erro ao guardar ano de nascimento:', error);
         }
     }
-            alert('Conta criada com sucesso!');
+            showToast('success', 'Conta criada!', 'Bem-vindo ao Voz de Riachos');
         } else {
             await signInWithEmailAndPassword(auth, email, password);
-            alert('Login efetuado com sucesso!');
+            showToast('success', 'Login efetuado!', 'Bem-vindo de volta');
         }
         closeAuthModal();
     } catch (error) {
@@ -157,7 +206,12 @@ authForm.addEventListener('submit', async (e) => {
             errorMessage = 'Email ou palavra-passe incorretos.';
         }
         
-        alert(errorMessage);
+        const errorTitle = error.code === 'auth/email-already-in-use' ? 'Email em uso' :
+                   error.code === 'auth/weak-password' ? 'Password fraca' :
+                   error.code === 'auth/invalid-email' ? 'Email inválido' :
+                   error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password' ? 'Erro de login' :
+                   'Erro';
+showToast('error', errorTitle, errorMessage);
     }
 });
 
@@ -166,7 +220,7 @@ createPostForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     
     if (!currentUser) {
-        alert('Precisa de fazer login para criar uma publicação.');
+        showToast('warning', 'Login necessário', 'Cria uma conta para reportar problemas.');
         return;
     }
     
@@ -174,7 +228,7 @@ createPostForm.addEventListener('submit', async (e) => {
     const body = document.getElementById('postBody').value.trim();
     
     if (title.length === 0 || body.length === 0) {
-        alert('Por favor preencha todos os campos.');
+        showToast('warning', 'Campos vazios', 'Preenche o título e descrição do problema.');
         return;
     }
     
@@ -191,9 +245,9 @@ createPostForm.addEventListener('submit', async (e) => {
         });
         
         createPostForm.reset();
-        alert('Publicação criada com sucesso!');
+        showToast('success', 'Problema reportado!', 'A tua publicação está agora visível.');
     } catch (error) {
-        alert('Erro ao criar publicação: ' + error.message);
+        showToast('error', 'Erro ao publicar', 'Tenta novamente mais tarde.');
     }
 });
 
@@ -370,11 +424,11 @@ function createPostCard(post, postId) {
         <div class="vote-section">
             <button class="vote-btn ${hasVoted ? 'voted' : ''}" 
                     data-post-id="${postId}"
-                    ${!currentUser ? 'disabled' : ''}
-                    title="${!currentUser ? 'Faça login para votar' : hasVoted ? 'Remover voto' : 'Votar'}">
+                    title="${!currentUser ? 'Cria conta para votar' : hasVoted ? 'Remover voto' : 'Votar'}">
                 ▲
             </button>
             <span class="vote-count">${post.votes || 0}</span>
+            <span class="vote-label">votos</span>
         </div>
         <div class="post-content">
             <div class="post-header">
@@ -391,8 +445,19 @@ function createPostCard(post, postId) {
     
     // Add vote button listener
     const voteBtn = card.querySelector('.vote-btn');
-    if (voteBtn && currentUser) {
-        voteBtn.addEventListener('click', () => handleVote(postId, hasVoted));
+    if (voteBtn) {
+        voteBtn.addEventListener('click', () => {
+            if (!currentUser) {
+                // Not logged in - show toast and open signup modal
+                showToast('info', 'Cria uma conta', 'Faz login para votar nos problemas da comunidade');
+                setTimeout(() => {
+                    openModal(true); // true = signup mode
+                }, 500);
+            } else {
+                // Logged in - proceed with vote
+                handleVote(postId, hasVoted);
+            }
+        });
     }
     
     // Add delete button listener
@@ -407,7 +472,7 @@ function createPostCard(post, postId) {
 // Handle Vote
 async function handleVote(postId, hasVoted) {
     if (!currentUser) {
-        alert('Precisa de fazer login para votar.');
+        showToast('warning', 'Login necessário', 'Cria uma conta para votar.');
         return;
     }
     
@@ -430,7 +495,7 @@ async function handleVote(postId, hasVoted) {
             });
         }
     } catch (error) {
-        alert('Erro ao votar: ' + error.message);
+        showToast('error', 'Erro ao votar', 'Tenta novamente.');
     }
 }
 
@@ -442,9 +507,9 @@ async function handleDelete(postId) {
     
     try {
         await deleteDoc(doc(db, 'posts', postId));
-        alert('Publicação eliminada com sucesso!');
+        showToast('success', 'Publicação eliminada', '');
     } catch (error) {
-        alert('Erro ao eliminar publicação: ' + error.message);
+        showToast('error', 'Erro ao eliminar', 'Tenta novamente.');
     }
 }
 
